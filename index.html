@@ -154,6 +154,37 @@ textarea{min-height:96px;resize:vertical}
 .footnote{font-size:12.5px;color:var(--muted);line-height:1.5;text-align:center;margin-top:16px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:560px){.grid2{grid-template-columns:1fr} .hero h1{font-size:44px}}
+
+/* --- UX fix: make finishing + sending unmissable --- */
+.counter-pill{display:inline-flex;align-items:center;gap:8px;background:var(--card2);border:1.5px solid var(--line);border-radius:999px;padding:8px 12px;font-size:13px;font-weight:800;margin:0 0 14px}
+.counter-pill b{background:var(--ink);color:var(--bg);min-width:28px;height:28px;border-radius:999px;display:grid;place-items:center;font-size:13px;padding:0 6px}
+.counter-pill.done{border-color:var(--green);background:#EFF6E8}
+@media(prefers-color-scheme:dark){.counter-pill.done{background:#24361F}}
+.send-card{border:2px solid var(--ink);background:var(--card);border-radius:24px;padding:20px;box-shadow:0 14px 34px rgba(0,0,0,.14);margin-top:14px}
+@media(prefers-color-scheme:dark){.send-card{border-color:var(--lime)}}
+.send-card h2{font-size:24px}
+.send-steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0}
+@media(max-width:520px){.send-steps{grid-template-columns:1fr}}
+.send-step{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:13px;line-height:1.4}
+.send-step strong{display:block;font-size:12px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
+.send-actions{display:grid;gap:10px}
+.send-primary{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:60px;padding:16px;border-radius:999px;background:var(--lime);color:var(--lime-ink);border:2px solid var(--lime-ink);font-weight:900;font-size:17px;text-decoration:none;text-align:center;box-shadow:0 6px 0 var(--lime-ink)}
+.send-primary:active{transform:translateY(2px);box-shadow:0 3px 0 var(--lime-ink)}
+.send-secondary{display:flex;gap:10px}
+.send-secondary .btn{font-size:14px;padding:13px 10px}
+.btn.success{background:var(--green);color:#fff;border-color:var(--green)}
+@media(prefers-color-scheme:dark){.btn.success{background:var(--lime);color:#111;border-color:var(--lime)}}
+.sent-banner{display:none;background:#EFF6E8;border:1.5px solid var(--green);color:var(--green);border-radius:14px;padding:12px 14px;font-weight:800;font-size:14px;line-height:1.45;margin-top:12px}
+.sent-banner.show{display:block}
+@media(prefers-color-scheme:dark){.sent-banner{background:#24361F;color:var(--lime);border-color:var(--lime)}}
+.done-strip{display:flex;align-items:center;gap:10px;background:var(--lime);color:var(--lime-ink);border-radius:16px;padding:12px 14px;font-weight:900;font-size:14px;margin-bottom:14px}
+.done-strip span:first-child{font-size:20px}
+details.summary-details{margin-top:14px}
+details.summary-details summary{cursor:pointer;font-weight:800;font-size:14px;padding:10px 0;min-height:44px}
+.sticky-send{position:sticky;bottom:12px;z-index:5;margin-top:14px;background:var(--ink);color:var(--bg);border-radius:999px;padding:8px;display:flex;gap:8px;box-shadow:0 12px 30px rgba(0,0,0,.28)}
+.sticky-send a,.sticky-send button{flex:1;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:999px;font-weight:900;font-size:14px;text-decoration:none;border:0;cursor:pointer}
+.sticky-send a{background:var(--lime);color:var(--lime-ink)}
+.sticky-send button{background:transparent;color:var(--bg);border:1.5px solid rgba(255,255,255,.35)}
 </style>
 </head>
 <body>
@@ -175,12 +206,14 @@ textarea{min-height:96px;resize:vertical}
 
     <div class="card" style="margin-top:14px">
       <h2>Quick heads-up</h2>
-      <p class="sub">Rate stuff honestly. If an idea sounds boring, give it a 1 — that helps more than being polite. At the end you’ll get your #1 pick + a summary you can send back.</p>
-      <div class="options">
-        <button class="opt" data-single="ready" data-value="Lets go"><span class="dot"></span><span><strong>Let’s go — show me the ideas</strong><small>I’ll rate them and pick my favorites head-to-head.</small></span></button>
+      <p class="sub">Rate stuff honestly. If an idea sounds boring, give it a 1 — that helps more than being polite.</p>
+      <div class="send-steps" style="margin:0 0 6px">
+        <div class="send-step"><strong>1 · Rate</strong>Tap flames on 8 ideas</div>
+        <div class="send-step"><strong>2 · Pick winners</strong>4 quick head-to-heads</div>
+        <div class="send-step"><strong>3 · One tap to send</strong>Last screen texts Dad for you — no copy-paste</div>
       </div>
       <div class="nav">
-        <button class="btn lime" id="startBtn">Start questionnaire →</button>
+        <button class="btn lime" id="startBtn" style="min-height:60px;font-size:17px">Start — show me the ideas →</button>
       </div>
       <p class="footnote">Made for Cruz Paguirigan — LA Breakers attacking mid, ref, and now… builder?</p>
     </div>
@@ -220,8 +253,9 @@ textarea{min-height:96px;resize:vertical}
     <div class="card">
       <h2>Rate every idea — <em>hype check</em></h2>
       <p class="sub">1 = “nah” &nbsp;•&nbsp; 3 = “maybe” &nbsp;•&nbsp; 5 = “build this NOW”. Tap the flames.</p>
+      <div class="counter-pill" id="rateCounter"><b>0 / 8</b><span>rated — rate at least 4 so your #1 pick is real</span></div>
       <div id="projectList"></div>
-      <p class="footnote" style="text-align:left;margin-top:12px">You don’t have to rate all of them to continue, but the more you rate, the smarter your final pick gets.</p>
+      <p class="footnote" style="text-align:left;margin-top:12px">Keep going even if you skip one — but your winner is only as good as your ratings.</p>
     </div>
     <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn primary" data-nav="next">Next: Head-to-head →</button></div>
   </section>
@@ -231,6 +265,7 @@ textarea{min-height:96px;resize:vertical}
     <div class="card">
       <h2>Head-to-head <em>playoffs</em></h2>
       <p class="sub">You can only pick one in each matchup. Go with your gut — no overthinking.</p>
+      <div class="counter-pill" id="vsCounter"><b>0 / 4</b><span>matchups picked</span></div>
       <div class="vs-grid" id="vsGrid"></div>
     </div>
     <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn primary" data-nav="next">Next: How you want to build →</button></div>
@@ -326,11 +361,13 @@ textarea{min-height:96px;resize:vertical}
         <button class="chip" data-single-chip="overall" data-value="4 - Lets build it this week">4 — Let’s build it this week 🔥</button>
       </div>
     </div>
-    <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn lime" id="seeResultsBtn">See my #1 pick →</button></div>
+    <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn lime" id="seeResultsBtn" style="min-height:56px">See my #1 pick &amp; send it →</button></div>
+    <p class="footnote">Next screen is the finish line — one big button there texts it straight to Dad.</p>
   </section>
 
   <!-- SCREEN 7: RESULTS -->
   <section class="screen" data-screen="7">
+    <div class="done-strip"><span>✓</span><span>You’re done — one last tap sends it to Dad</span></div>
     <div class="result-hero">
       <div class="kicker">Your scouting report • Cruz</div>
       <h2 id="winnerTitle">Your #1 pick is <span>—</span></h2>
@@ -341,21 +378,44 @@ textarea{min-height:96px;resize:vertical}
       </div>
     </div>
 
+    <!-- SEND FIRST — this is the whole point of finishing -->
+    <div class="send-card" id="sendCard">
+      <h2>Don’t just close this — <em>send it to Dad</em></h2>
+      <p class="sub" style="margin-bottom:0">This is the step that was easy to miss before. No copying, no switching apps and pasting, no remembering. Pick one:</p>
+      <div class="send-steps">
+        <div class="send-step"><strong>Fastest</strong>Tap the green button — your answers are already written for you</div>
+        <div class="send-step"><strong>Then</strong>Pick Dad / Messages and hit Send</div>
+        <div class="send-step"><strong>Done</strong>Dad gets your #1 pick and we build that one</div>
+      </div>
+      <div class="send-actions">
+        <a class="send-primary" id="textDadBtn" href="#">💬 Text it to Dad — one tap</a>
+        <div class="send-secondary">
+          <button class="btn primary" id="copyBtn">📋 Copy instead</button>
+          <button class="btn" id="downloadBtn">⬇ Save as file</button>
+        </div>
+        <button class="btn" id="shareBtn" style="display:none">Share another way…</button>
+      </div>
+      <div class="sent-banner" id="sentBanner">✓ Nice — if the share sheet or Messages opened, pick Dad and hit Send there. If you copied instead, paste it into a text to Dad now before you close this page.</div>
+      <details class="summary-details">
+        <summary>Preview what you’re sending</summary>
+        <div class="summarybox" id="summaryBox">Your summary will appear here.</div>
+      </details>
+      <p class="footnote" style="text-align:left">On Dad’s phone instead? Tap “Copy instead” and hand it back — or just show him this screen. Your answers only live on this page, so send before closing.</p>
+    </div>
+
     <div class="card">
       <h2>Your draft board</h2>
       <p class="sub">Ranked from your ratings + head-to-head wins + vibe. This isn’t final — it’s a starting point to talk about.</p>
       <div class="ranklist" id="rankList"></div>
-    </div>
-
-    <div class="card">
-      <h2>Send this back</h2>
-      <p class="sub">Tap copy and paste it into a text / message to Dad. That’s how we know what to build first.</p>
-      <div class="summarybox" id="summaryBox">Your summary will appear here.</div>
       <div class="nav">
-        <button class="btn primary" id="copyBtn">📋 Copy my answers</button>
+        <button class="btn" data-nav="back">← Change answers</button>
         <button class="btn small" id="restartBtn">↺ Retake</button>
       </div>
-      <p class="footnote">No account, no saving online — this lives only on this page until you copy it.</p>
+    </div>
+
+    <div class="sticky-send" aria-label="Send your answers">
+      <a id="textDadBtn2" href="#">💬 Text Dad</a>
+      <button id="copyBtn2" type="button">📋 Copy</button>
     </div>
   </section>
 
@@ -418,8 +478,17 @@ function renderProjects(){
         x.classList.toggle("active", v<=n);
       });
       const hw=document.getElementById("hw-"+id); if(hw) hw.textContent=hypeWords[n];
+      updateRateCounter();
     });
   });
+}
+function updateRateCounter(){
+  const n=Object.keys(state.ratings).length;
+  const el=document.getElementById("rateCounter");
+  if(!el) return;
+  el.querySelector("b").textContent=n+" / 8";
+  el.querySelector("span").textContent = n>=8 ? "All rated — your pick is locked in" : n>=4 ? "rated — good, a few more makes it even smarter" : "rated — rate at least 4 so your #1 pick is real";
+  el.classList.toggle("done", n>=4);
 }
 function renderVS(){
   const grid=$("#vsGrid");
@@ -438,6 +507,9 @@ function renderVS(){
       const [idxStr,id]=btn.dataset.vs.split(":"); const idx=+idxStr;
       state.vsPicks[idx]=id;
       grid.querySelectorAll(`[data-vs^="${idx}:"]`).forEach(x=>x.classList.toggle("picked", x.dataset.vs===btn.dataset.vs));
+      const n=Object.keys(state.vsPicks).length;
+      const el=document.getElementById("vsCounter");
+      if(el){ el.querySelector("b").textContent=n+" / 4"; el.querySelector("span").textContent = n>=4 ? "All picked — playoffs complete" : "matchups picked"; el.classList.toggle("done", n>=4); }
     });
   });
 }
@@ -551,20 +623,67 @@ function buildResults(){
   const own=document.getElementById("ownIdea").value.trim(); if(own){ lines.push(""); lines.push("My own idea / dream version: " + own); }
   const pname=document.getElementById("projectName").value.trim(); if(pname) lines.push("Name idea: " + pname);
   if(state.singleChips.overall) lines.push("Overall hype: " + state.singleChips.overall);
-  $("#summaryBox").textContent=lines.join("\n");
+  const summaryText=lines.join("\n");
+  $("#summaryBox").textContent=summaryText;
+  // One-tap send without copy/paste — and no phone number baked into the page:
+  // the primary button uses the system share sheet when available, otherwise it
+  // opens Messages with the text already written and Cruz picks Dad as recipient.
+  // iOS uses & as the sms body separator, Android uses ? — "?&" works on both in practice.
+  const smsHref="sms:?&body="+encodeURIComponent(summaryText);
+  const t1=document.getElementById("textDadBtn"); if(t1) t1.setAttribute("href",smsHref);
+  const t2=document.getElementById("textDadBtn2"); if(t2) t2.setAttribute("href",smsHref);
+  const shareBtn=document.getElementById("shareBtn");
+  if(shareBtn && navigator.share){ shareBtn.style.display=""; }
 }
 
 function showToast(msg){
   const t=$("#toast"); t.textContent=msg; t.classList.add("show");
   setTimeout(()=>t.classList.remove("show"),2200);
 }
-$("#copyBtn").addEventListener("click", async ()=>{
+function markSent(msg){
+  const b=document.getElementById("sentBanner"); if(b){ b.classList.add("show"); }
+  showToast(msg);
+}
+async function doCopy(btn){
   const text=$("#summaryBox").textContent;
-  try{ await navigator.clipboard.writeText(text); showToast("Copied — paste it to Dad!"); }
+  let ok=false;
+  try{ await navigator.clipboard.writeText(text); ok=true; }
   catch(e){
-    // fallback
-    const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy"); showToast("Copied — paste it to Dad!");}catch(_){showToast("Select the text above and copy it");} ta.remove();
+    const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); try{ ok=document.execCommand("copy"); }catch(_){ ok=false; } ta.remove();
   }
+  if(ok){
+    [document.getElementById("copyBtn"),document.getElementById("copyBtn2")].forEach(function(b){ if(b){ b.textContent="✓ Copied — now paste it to Dad"; b.classList.add("success"); }});
+    markSent("Copied ✓ — now paste it into a text to Dad");
+  } else {
+    // Last resort: open the preview and select it so a long-press copy works
+    const det=document.querySelector(".summary-details"); if(det) det.open=true;
+    showToast("Tap “Preview” above, select all, and copy");
+  }
+}
+$("#copyBtn").addEventListener("click", function(){ doCopy(this); });
+const copyBtn2=document.getElementById("copyBtn2"); if(copyBtn2) copyBtn2.addEventListener("click", function(){ doCopy(this); });
+["textDadBtn","textDadBtn2"].forEach(function(id){ const el=document.getElementById(id); if(el) el.addEventListener("click", async function(e){
+  // Prefer the native share sheet: one tap, Cruz picks Dad / Messages himself.
+  if(navigator.share){
+    e.preventDefault();
+    try{ await navigator.share({title:"Cruz — Project Questionnaire", text:$("#summaryBox").textContent}); markSent("Shared ✓ — Dad's got it"); }catch(_){ /* cancelled — link fallback stays available */ }
+  } else {
+    markSent("Opening Messages — pick Dad, then hit Send ✓");
+  }
+}); });
+const dlBtn=document.getElementById("downloadBtn");
+if(dlBtn) dlBtn.addEventListener("click", function(){
+  const text=$("#summaryBox").textContent;
+  const blob=new Blob([text],{type:"text/plain"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="cruz-project-pick.txt"; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); },2000);
+  markSent("Saved as a file ✓ — send that file to Dad");
+});
+const shareBtn=document.getElementById("shareBtn");
+if(shareBtn) shareBtn.addEventListener("click", async function(){
+  const text=$("#summaryBox").textContent;
+  try{ await navigator.share({title:"Cruz — Project Questionnaire", text:text}); markSent("Shared ✓"); }catch(e){ /* user cancelled */ }
 });
 
 renderProjects();
