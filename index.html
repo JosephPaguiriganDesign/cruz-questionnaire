@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Cruz Project Questionnaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F3ED;
+  --bg2:#E8EBE0;
+  --card:#FFFFFF;
+  --card2:#F7F8F3;
+  --ink:#111713;
+  --muted:#5B665E;
+  --line:#DDE2D6;
+  --green:#0E4D2E;
+  --green2:#166534;
+  --lime:#D9F24F;
+  --lime-ink:#1A2E05;
+  --yellow:#FFC531;
+  --red:#FF5A3C;
+  --radius:20px;
+  --shadow:0 10px 30px rgba(14,77,46,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0C120E;
+    --bg2:#121A13;
+    --card:#171F19;
+    --card2:#1E2A20;
+    --ink:#EDF2E9;
+    --muted:#9AA99E;
+    --line:#2A362C;
+    --green:#D9F24F;
+    --green2:#A3C93A;
+    --lime:#D9F24F;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,[role="button"]{min-height:44px}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 40px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--bg);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;padding:8px 12px;border-radius:999px}
+.pill i{width:8px;height:8px;background:var(--lime);border-radius:50%;display:block}
+.stepcount{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);font-weight:700}
+.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin:10px 0 18px}
+.progress b{display:block;height:100%;background:var(--green);width:12%;transition:width .35s ease;border-radius:999px}
+@media(prefers-color-scheme:dark){.progress b{background:var(--lime)}}
+
+.hero{background:var(--green);color:#fff;border-radius:28px;padding:26px 22px 22px;position:relative;overflow:hidden}
+@media(prefers-color-scheme:dark){.hero{background:#1A2E1E;color:#EDF2E9;border:1px solid var(--line)}}
+.hero:before{content:"";position:absolute;right:-30px;top:-30px;width:180px;height:180px;border:22px solid rgba(255,255,255,.08);border-radius:50%}
+.hero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(255,255,255,.15)}
+.hero h1{font-family:Anton,Inter,sans-serif;font-size:52px;line-height:.92;letter-spacing:.02em;text-transform:uppercase;margin:10px 0 12px;font-weight:400}
+.hero h1 span{color:var(--lime)}
+.hero p{font-size:16px;line-height:1.55;color:rgba(255,255,255,.88);max-width:520px;margin:0}
+@media(prefers-color-scheme:dark){.hero p{color:#C8D6C4}}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero-meta span{font-size:12px;font-weight:700;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);padding:8px 10px;border-radius:999px}
+.hero-meta span:first-child{background:var(--lime);color:var(--lime-ink);border-color:transparent}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.card + .card{margin-top:14px}
+h2{font-size:22px;line-height:1.15;margin:0 0 6px;letter-spacing:-.02em}
+h2 em{font-style:normal;color:var(--green2)}
+@media(prefers-color-scheme:dark){h2 em{color:var(--lime)}}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 0 16px}
+label{font-size:13px;font-weight:700;letter-spacing:.02em}
+input[type="text"],textarea,select{width:100%;padding:14px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card2);color:var(--ink);font:inherit;font-size:15px;outline:none}
+input[type="text"]:focus,textarea:focus{border-color:var(--green)}
+textarea{min-height:96px;resize:vertical}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--card2);color:var(--ink);padding:11px 14px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;min-height:44px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.lime[aria-pressed="true"]{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
+
+.options{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:15px 14px;border-radius:16px;border:1.5px solid var(--line);background:var(--card2);cursor:pointer;color:var(--ink)}
+.opt strong{display:block;font-size:15px;line-height:1.3}
+.opt small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+.opt .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:0 0 auto;margin-top:1px;display:grid;place-items:center}
+.opt.selected{border-color:var(--green);background:#EFF6E8}
+@media(prefers-color-scheme:dark){.opt.selected{background:#24361F}}
+.opt.selected .dot{border-color:var(--green);background:var(--green)}
+.opt.selected .dot:after{content:"";width:8px;height:8px;background:#fff;border-radius:50%}
+@media(prefers-color-scheme:dark){.opt.selected .dot:after{background:#111}}
+
+/* Project rating cards */
+.proj{border:1.5px solid var(--line);border-radius:18px;padding:16px;background:var(--card2)}
+.proj + .proj{margin-top:12px}
+.proj-head{display:flex;gap:12px}
+.icon{width:48px;height:48px;border-radius:14px;background:var(--ink);color:var(--lime);display:grid;place-items:center;flex:0 0 auto;font-size:22px}
+.proj h3{margin:0;font-size:16px;line-height:1.2}
+.proj p{margin:4px 0 0;color:var(--muted);font-size:13.5px;line-height:1.5}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tags span{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 7px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
+.hype{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.hype-label{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stars{display:flex;gap:6px}
+.star{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);display:grid;place-items:center;font-size:20px;cursor:pointer;color:#CBD5C0}
+.star.active{background:var(--yellow);border-color:var(--yellow);color:#231a00}
+.hype-word{font-size:12px;font-weight:700;min-width:74px;text-align:right;color:var(--muted)}
+
+/* Versus */
+.vs-grid{display:grid;gap:14px}
+.vs{border:1.5px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card2)}
+.vs-head{padding:10px 14px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--muted);display:flex;justify-content:space-between;border-bottom:1px solid var(--line)}
+.vs-body{display:grid;grid-template-columns:1fr auto 1fr}
+@media(max-width:520px){.vs-body{grid-template-columns:1fr} .vs-mid{display:none}}
+.vs-pick{padding:16px;text-align:left;background:transparent;border:0;cursor:pointer;color:var(--ink);min-height:92px}
+.vs-pick strong{display:block;font-size:15px;line-height:1.3}
+.vs-pick small{color:var(--muted);font-size:13px;line-height:1.4}
+.vs-pick.picked{background:var(--lime);color:var(--lime-ink)}
+.vs-pick.picked small{color:#3A4A12}
+.vs-mid{display:grid;place-items:center;padding:0 6px;font-family:Anton,sans-serif;font-size:13px;color:var(--muted)}
+
+.nav{display:flex;gap:10px;margin-top:18px}
+.btn{flex:1;padding:15px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:800;font-size:15px;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.lime{background:var(--lime);color:var(--lime-ink);border-color:var(--lime)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.small{flex:0 0 auto;padding:12px 16px;font-size:14px}
+
+.screen{display:none}
+.screen.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.screen.active{animation:none}}
+
+/* Results */
+.result-hero{background:var(--ink);color:var(--bg);border-radius:24px;padding:22px}
+.result-hero .kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;opacity:.7}
+.result-hero h2{font-size:28px;margin:8px 0 6px;color:var(--bg)}
+.result-hero h2 span{color:var(--lime)}
+.result-hero p{color:rgba(255,255,255,.75);line-height:1.55;margin:0;font-size:14.5px}
+@media(prefers-color-scheme:dark){.result-hero p{color:#B9C6B6}}
+.ranklist{display:grid;gap:10px;margin-top:14px}
+.rank{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.rank-num{font-family:Anton,sans-serif;font-size:22px;width:36px;text-align:center}
+.rank-bar{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:6px}
+.rank-bar b{display:block;height:100%;background:var(--green)}
+@media(prefers-color-scheme:dark){.rank-bar b{background:var(--lime)}}
+.summarybox{background:var(--card2);border:1px dashed var(--line);border-radius:16px;padding:14px;font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:999px;font-weight:700;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);display:none;z-index:20;max-width:90vw;text-align:center}
+.toast.show{display:block}
+.footnote{font-size:12.5px;color:var(--muted);line-height:1.5;text-align:center;margin-top:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr} .hero h1{font-size:44px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="pill"><i></i> For Cruz • #27</div>
+    <div class="stepcount" id="stepCount">START</div>
+  </div>
+  <div class="progress" aria-hidden="true"><b id="progBar"></b></div>
+
+  <!-- SCREEN 0: INTRO -->
+  <section class="screen active" data-screen="0">
+    <div class="hero">
+      <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;opacity:.85">Pick your build • No wrong answers</div>
+      <h1>What do<br>you actually<br><span>want to build?</span></h1>
+      <p>This isn’t a test. It’s a scouting report for your first real web app — so we build the one you’ll actually open, share, and keep alive.</p>
+      <div class="hero-meta"><span>⏱ About 3 minutes</span><span>8 project ideas</span><span>You pick the winner</span></div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h2>Quick heads-up</h2>
+      <p class="sub">Rate stuff honestly. If an idea sounds boring, give it a 1 — that helps more than being polite. At the end you’ll get your #1 pick + a summary you can send back.</p>
+      <div class="options">
+        <button class="opt" data-single="ready" data-value="Lets go"><span class="dot"></span><span><strong>Let’s go — show me the ideas</strong><small>I’ll rate them and pick my favorites head-to-head.</small></span></button>
+      </div>
+      <div class="nav">
+        <button class="btn lime" id="startBtn" disabled>Start questionnaire →</button>
+      </div>
+      <p class="footnote">Made for Cruz Paguirigan — LA Breakers attacking mid, ref, and now… builder?</p>
+    </div>
+  </section>
+
+  <!-- SCREEN 1: VIBE -->
+  <section class="screen" data-screen="1">
+    <div class="card">
+      <h2>First — what kind of fun <em>is fun</em> for you?</h2>
+      <p class="sub">Tap all that sound like you. This helps weight the final pick.</p>
+      <label style="display:block;margin-bottom:8px">Your vibe (pick any)</label>
+      <div class="chips" id="vibeChips">
+        <button class="chip" data-chip="vibe" data-value="Competitive">🏆 Competitive — I want rankings</button>
+        <button class="chip" data-chip="vibe" data-value="Funny / trash talk">😂 Funny / trash talk</button>
+        <button class="chip" data-chip="vibe" data-value="Stats-nerdy">📊 Stats-nerdy</button>
+        <button class="chip" data-chip="vibe" data-value="Creative / design">🎨 Creative / design</button>
+        <button class="chip" data-chip="vibe" data-value="Chill daily habit">🔥 Daily streak / habit</button>
+        <button class="chip" data-chip="vibe" data-value="With friends">👥 Better with friends</button>
+        <button class="chip" data-chip="vibe" data-value="Game I can play">🎮 A game I can play</button>
+        <button class="chip" data-chip="vibe" data-value="Useful on game day">⚽ Useful on game day</button>
+      </div>
+
+      <div style="height:18px"></div>
+      <label style="display:block;margin-bottom:8px">If your friends saw it, you’d want them to say…</label>
+      <div class="options" id="friendReaction">
+        <button class="opt" data-single="reaction" data-value="Yo send me the link"><span class="dot"></span><span><strong>“Yo, send me the link”</strong><small>They want in right away.</small></span></button>
+        <button class="opt" data-single="reaction" data-value="Im beating your score"><span class="dot"></span><span><strong>“I’m beating your score”</strong><small>Instant competition.</small></span></button>
+        <button class="opt" data-single="reaction" data-value="You actually built that"><span class="dot"></span><span><strong>“You actually built that?”</strong><small>It looks legit / impressive.</small></span></button>
+        <button class="opt" data-single="reaction" data-value="This is actually useful"><span class="dot"></span><span><strong>“This is actually useful”</strong><small>You’d use it every week.</small></span></button>
+      </div>
+    </div>
+    <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn primary" data-nav="next">Next: Rate the ideas →</button></div>
+  </section>
+
+  <!-- SCREEN 2: RATE PROJECTS -->
+  <section class="screen" data-screen="2">
+    <div class="card">
+      <h2>Rate every idea — <em>hype check</em></h2>
+      <p class="sub">1 = “nah” &nbsp;•&nbsp; 3 = “maybe” &nbsp;•&nbsp; 5 = “build this NOW”. Tap the flames.</p>
+      <div id="projectList"></div>
+      <p class="footnote" style="text-align:left;margin-top:12px">You don’t have to rate all of them to continue, but the more you rate, the smarter your final pick gets.</p>
+    </div>
+    <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn primary" data-nav="next">Next: Head-to-head →</button></div>
+  </section>
+
+  <!-- SCREEN 3: HEAD TO HEAD -->
+  <section class="screen" data-screen="3">
+    <div class="card">
+      <h2>Head-to-head <em>playoffs</em></h2>
+      <p class="sub">You can only pick one in each matchup. Go with your gut — no overthinking.</p>
+      <div class="vs-grid" id="vsGrid"></div>
+    </div>
+    <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn primary" data-nav="next">Next: How you want to build →</button></div>
+  </section>
+
+  <!-- SCREEN 4: BUILD STYLE -->
+  <section class="screen" data-screen="4">
+    <div class="card">
+      <h2>How do you want to <em>actually build it?</em></h2>
+      <p class="sub">Be real about time and coding. There’s no “hard mode” bonus.</p>
+
+      <label style="display:block;margin-bottom:8px">How hands-on do you want to be?</label>
+      <div class="options" id="handsOn">
+        <button class="opt" data-single="hands" data-value="I want to learn to code it"><span class="dot"></span><span><strong>I want to learn to code it</strong><small>Show me how it works, I’ll type / tweak / break things.</small></span></button>
+        <button class="opt" data-single="hands" data-value="Build it together, I direct it"><span class="dot"></span><span><strong>Build it together — I direct it</strong><small>I pick the features, colors, names. Help me with the code.</small></span></button>
+        <button class="opt" data-single="hands" data-value="Make me a starter, Ill customize"><span class="dot"></span><span><strong>Make me a starter, I’ll customize it</strong><small>Give me a working version I can change and make mine.</small></span></button>
+        <button class="opt" data-single="hands" data-value="Not sure yet"><span class="dot"></span><span><strong>Not sure yet</strong><small>Depends on the project.</small></span></button>
+      </div>
+
+      <div style="height:18px"></div>
+      <label style="display:block;margin-bottom:8px">Realistically, time per week?</label>
+      <div class="chips" id="timeChips">
+        <button class="chip" data-single-chip="time" data-value="30 min / week">30 min / week</button>
+        <button class="chip" data-single-chip="time" data-value="1-2 hours / week">1–2 hrs / week</button>
+        <button class="chip" data-single-chip="time" data-value="A few hours on weekends">A few hrs on weekends</button>
+        <button class="chip" data-single-chip="time" data-value="Go big for a week then chill">Go big for a week, then chill</button>
+      </div>
+
+      <div style="height:18px"></div>
+      <label style="display:block;margin-bottom:8px">What part sounds MOST fun to do?</label>
+      <div class="chips" id="funPartChips">
+        <button class="chip" data-chip="funpart" data-value="Designing how it looks">Designing how it looks</button>
+        <button class="chip" data-chip="funpart" data-value="Game logic / rules">Game logic / rules</button>
+        <button class="chip" data-chip="funpart" data-value="Adding players & data">Adding players &amp; data</button>
+        <button class="chip" data-chip="funpart" data-value="Testing with friends">Testing with friends</button>
+        <button class="chip" data-chip="funpart" data-value="Naming it / branding">Naming it / branding</button>
+        <button class="chip" data-chip="funpart" data-value="Seeing people use it">Seeing people use it</button>
+      </div>
+    </div>
+    <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn primary" data-nav="next">Next: Who’s it for? →</button></div>
+  </section>
+
+  <!-- SCREEN 5: AUDIENCE + FEATURES -->
+  <section class="screen" data-screen="5">
+    <div class="card">
+      <h2>Who’s it for &amp; <em>what must it have?</em></h2>
+      <p class="sub">This decides if we keep it tiny or make it shareable.</p>
+      <label style="display:block;margin-bottom:8px">Main audience</label>
+      <div class="options" id="audienceOpts">
+        <button class="opt" data-single="audience" data-value="Just me"><span class="dot"></span><span><strong>Just me</strong><small>My own tool / training / game.</small></span></button>
+        <button class="opt" data-single="audience" data-value="Me + close friends"><span class="dot"></span><span><strong>Me + close friends</strong><small>Small group, we all know each other.</small></span></button>
+        <button class="opt" data-single="audience" data-value="My team (BU14/BU15)"><span class="dot"></span><span><strong>My team — Breakers</strong><small>Teammates would actually check it.</small></span></button>
+        <button class="opt" data-single="audience" data-value="Anyone online"><span class="dot"></span><span><strong>Anyone online</strong><small>Public link, strangers could play too.</small></span></button>
+      </div>
+
+      <div style="height:18px"></div>
+      <label style="display:block;margin-bottom:8px">Must-have features (pick up to 4)</label>
+      <div class="chips" id="featureChips">
+        <button class="chip" data-chip="feature" data-value="Leaderboard">Leaderboard</button>
+        <button class="chip" data-chip="feature" data-value="Works on my phone">Works on my phone</button>
+        <button class="chip" data-chip="feature" data-value="My name / logo on it">My name / logo on it</button>
+        <button class="chip" data-chip="feature" data-value="Friends can join">Friends can join</button>
+        <button class="chip" data-chip="feature" data-value="Photos / player cards">Photos / player cards</button>
+        <button class="chip" data-chip="feature" data-value="Levels / XP / streaks">Levels / XP / streaks</button>
+        <button class="chip" data-chip="feature" data-value="Sound / animations">Sound / animations</button>
+        <button class="chip" data-chip="feature" data-value="Super fast to update">Super fast to update</button>
+      </div>
+
+      <div style="height:18px"></div>
+      <label for="dealbreaker">Anything you definitely DON’T want?</label>
+      <p class="sub" style="margin-bottom:8px">Example: “No homework vibes”, “Don’t make me type a lot”, “No public posting”.</p>
+      <input type="text" id="dealbreaker" placeholder="Type it here (optional)" autocomplete="off">
+    </div>
+    <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn primary" data-nav="next">Last step: Your own idea →</button></div>
+  </section>
+
+  <!-- SCREEN 6: OWN IDEA -->
+  <section class="screen" data-screen="6">
+    <div class="card">
+      <h2>Your call — <em>any idea of your own?</em></h2>
+      <p class="sub">Even a half-idea counts. Or steal one from above and remix it.</p>
+      <label for="ownIdea">My dream version / my own idea</label>
+      <textarea id="ownIdea" placeholder="e.g. A 1v1 ladder but only for Breakers guys, with loser-has-to… / A game where you guess the player from his boots only…"></textarea>
+      <div style="height:14px"></div>
+      <label for="projectName">If you had to name your app right now…</label>
+      <input type="text" id="projectName" placeholder="Name it (optional — funny names welcome)" autocomplete="off" style="margin-top:8px">
+      <div style="height:14px"></div>
+      <label style="display:block;margin-bottom:8px">How hyped are you overall to build *something*?</label>
+      <div class="chips" id="overallChips">
+        <button class="chip" data-single-chip="overall" data-value="1 - Just checking it out">1 — Just checking it out</button>
+        <button class="chip" data-single-chip="overall" data-value="2 - Kind of interested">2 — Kind of interested</button>
+        <button class="chip" data-single-chip="overall" data-value="3 - Pretty hyped">3 — Pretty hyped</button>
+        <button class="chip" data-single-chip="overall" data-value="4 - Lets build it this week">4 — Let’s build it this week 🔥</button>
+      </div>
+    </div>
+    <div class="nav"><button class="btn" data-nav="back">← Back</button><button class="btn lime" id="seeResultsBtn">See my #1 pick →</button></div>
+  </section>
+
+  <!-- SCREEN 7: RESULTS -->
+  <section class="screen" data-screen="7">
+    <div class="result-hero">
+      <div class="kicker">Your scouting report • Cruz</div>
+      <h2 id="winnerTitle">Your #1 pick is <span>—</span></h2>
+      <p id="winnerDesc">Answer a few more ratings and your top match will show here.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+        <span style="background:var(--lime);color:#1A2E05;font-weight:800;font-size:12px;padding:8px 10px;border-radius:999px" id="winnerTag">TOP MATCH</span>
+        <span style="background:rgba(255,255,255,.14);font-weight:700;font-size:12px;padding:8px 10px;border-radius:999px" id="overallTag">Hype: —</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Your draft board</h2>
+      <p class="sub">Ranked from your ratings + head-to-head wins + vibe. This isn’t final — it’s a starting point to talk about.</p>
+      <div class="ranklist" id="rankList"></div>
+    </div>
+
+    <div class="card">
+      <h2>Send this back</h2>
+      <p class="sub">Tap copy and paste it into a text / message to Dad. That’s how we know what to build first.</p>
+      <div class="summarybox" id="summaryBox">Your summary will appear here.</div>
+      <div class="nav">
+        <button class="btn primary" id="copyBtn">📋 Copy my answers</button>
+        <button class="btn small" id="restartBtn">↺ Retake</button>
+      </div>
+      <p class="footnote">No account, no saving online — this lives only on this page until you copy it.</p>
+    </div>
+  </section>
+
+</div>
+<div class="toast" id="toast">Copied — paste it to Dad!</div>
+
+<script>
+const PROJECTS = [
+  {id:"ladder", name:"1v1 Ladder & Rankings", icon:"👑", desc:"You run a backyard 1v1 league for friends. Log scores, rankings move like a video game leaderboard. You're the commissioner.", tags:["Competitive","With friends","Leaderboard"], vibeBonus:["Competitive","With friends"]},
+  {id:"prediction", name:"Prediction League", icon:"🔮", desc:"Pick scores for big weekend games — Champions League, Premier League, MLS. Points for exact scores. Weekly winner, season champion.", tags:["Weekly","With friends","Stats"], vibeBonus:["Competitive","Stats-nerdy","With friends"]},
+  {id:"drills", name:"Daily Drill App — XP & Streaks", icon:"⚡", desc:"Like Duolingo for touches. A drill every day, log it, earn XP, level up, keep your streak. Weak foot, juggling, turns — your training log.", tags:["Solo","Daily","Levels"], vibeBonus:["Chill daily habit","Stats-nerdy"]},
+  {id:"pickup", name:"Pickup Game Organizer", icon:"📍", desc:"“Who's in Saturday?” Headcount, auto-split fair teams from ratings, pick the spot. The app your crew checks every week.", tags:["Useful","With friends","Game day"], vibeBonus:["With friends","Useful on game day"]},
+  {id:"guess", name:"Guess-The-Player Daily Game", icon:"❓", desc:"Wordle for footballers. Guess the player in 6 tries from clues — club, position, age, goals. New player every day, friends play on their phones.", tags:["Daily game","Playable","Shareable"], vibeBonus:["Game I can play","Chill daily habit"]},
+  {id:"penalty", name:"Penalty Shootout Game", icon:"🥅", desc:"A playable browser game: pick your corner, set power, keeper dives. Beat your high score, challenge friends to beat it.", tags:["Playable game","Fun","Shareable"], vibeBonus:["Game I can play","Creative / design"]},
+  {id:"ref", name:"Referee Toolkit", icon:"🟨", desc:"Built for your ref games: match timer, score, cards, subs log — right on your phone on the sideline. You're the first user.", tags:["Useful","Game day","Solo tool"], vibeBonus:["Useful on game day","Stats-nerdy"]},
+  {id:"stats", name:"BU14 Stats Page", icon:"📈", desc:"Your team's hub: results, scorers, assists, standings. The page your teammates actually check after games.", tags:["Team","Stats","Useful"], vibeBonus:["Stats-nerdy","With friends","Useful on game day"]},
+];
+const MATCHUPS = [
+  ["ladder","prediction"],
+  ["drills","guess"],
+  ["pickup","penalty"],
+  ["ref","stats"],
+];
+const state = {
+  screen:0,
+  singles:{},
+  chips:{vibe:new Set(), funpart:new Set(), feature:new Set()},
+  singleChips:{},
+  ratings:{},
+  vsPicks:{}, // matchup index -> winner id
+};
+const hypeWords = ["","Nah","Meh","Maybe","Into it","BUILD IT"];
+
+function $(s){return document.querySelector(s)}
+function $$(s){return [...document.querySelectorAll(s)]}
+
+function renderProjects(){
+  const el=$("#projectList");
+  el.innerHTML=PROJECTS.map(p=>`
+    <div class="proj" data-proj="${p.id}">
+      <div class="proj-head">
+        <div class="icon">${p.icon}</div>
+        <div><h3>${p.name}</h3><p>${p.desc}</p><div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div></div>
+      </div>
+      <div class="hype">
+        <span class="hype-label">Hype</span>
+        <div class="stars" role="group" aria-label="Rate ${p.name}">
+          ${[1,2,3,4,5].map(n=>`<button class="star" data-rate="${p.id}:${n}" aria-label="${n} out of 5">🔥</button>`).join("")}
+        </div>
+        <span class="hype-word" id="hw-${p.id}">Tap to rate</span>
+      </div>
+    </div>`).join("");
+  el.querySelectorAll("[data-rate]").forEach(b=>{
+    b.addEventListener("click",()=>{
+      const [id,nStr]=b.dataset.rate.split(":"); const n=+nStr;
+      state.ratings[id]=n;
+      // update UI for that proj
+      el.querySelectorAll(`[data-rate^="${id}:"]`).forEach(x=>{
+        const v=+x.dataset.rate.split(":")[1];
+        x.classList.toggle("active", v<=n);
+      });
+      const hw=document.getElementById("hw-"+id); if(hw) hw.textContent=hypeWords[n];
+    });
+  });
+}
+function renderVS(){
+  const grid=$("#vsGrid");
+  grid.innerHTML=MATCHUPS.map((pair,idx)=>{
+    const a=PROJECTS.find(p=>p.id===pair[0]), b=PROJECTS.find(p=>p.id===pair[1]);
+    return `<div class="vs">
+      <div class="vs-head"><span>Matchup ${idx+1} of ${MATCHUPS.length}</span><span>Pick 1</span></div>
+      <div class="vs-body">
+        <button class="vs-pick" data-vs="${idx}:${a.id}"><strong>${a.icon} ${a.name}</strong><small>${a.tags.join(" • ")}</small></button>
+        <div class="vs-mid">VS</div>
+        <button class="vs-pick" data-vs="${idx}:${b.id}"><strong>${b.icon} ${b.name}</strong><small>${b.tags.join(" • ")}</small></button>
+      </div></div>`;
+  }).join("");
+  grid.querySelectorAll("[data-vs]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const [idxStr,id]=btn.dataset.vs.split(":"); const idx=+idxStr;
+      state.vsPicks[idx]=id;
+      grid.querySelectorAll(`[data-vs^="${idx}:"]`).forEach(x=>x.classList.toggle("picked", x.dataset.vs===btn.dataset.vs));
+    });
+  });
+}
+
+// Single-select options
+document.addEventListener("click",e=>{
+  const opt=e.target.closest("[data-single]");
+  if(opt){
+    const key=opt.dataset.single, val=opt.dataset.value;
+    state.singles[key]=val;
+    // deselect siblings in same container
+    const container=opt.parentElement;
+    container.querySelectorAll("[data-single]").forEach(o=>o.classList.toggle("selected", o===opt));
+    if(key==="ready"){ $("#startBtn").disabled=false; }
+  }
+  const chip=e.target.closest("[data-chip]");
+  if(chip){
+    const key=chip.dataset.chip, val=chip.dataset.value;
+    const set=state.chips[key];
+    if(key==="feature" && !set.has(val) && set.size>=4){ showToast("Max 4 must-haves — unpick one first"); return; }
+    if(set.has(val)){ set.delete(val); chip.setAttribute("aria-pressed","false"); } else { set.add(val); chip.setAttribute("aria-pressed","true"); }
+  }
+  const schip=e.target.closest("[data-single-chip]");
+  if(schip){
+    const key=schip.dataset.singleChip, val=schip.dataset.value;
+    state.singleChips[key]=val;
+    const container=schip.parentElement;
+    container.querySelectorAll("[data-single-chip]").forEach(c=>c.setAttribute("aria-pressed", c===schip ? "true":"false"));
+  }
+});
+
+function goTo(n){
+  state.screen=n;
+  $$(".screen").forEach(s=>s.classList.toggle("active", +s.dataset.screen===n));
+  const labels=["START","STEP 1 / 6","STEP 2 / 6","STEP 3 / 6","STEP 4 / 6","STEP 5 / 6","STEP 6 / 6","YOUR PICK"];
+  $("#stepCount").textContent=labels[n]||"";
+  $("#progBar").style.width = (n===0?8: n===7?100: 12 + n*13) + "%";
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(n===7) buildResults();
+}
+$$("[data-nav]").forEach(b=>{
+  b.addEventListener("click",()=>{
+    if(b.dataset.nav==="next") goTo(Math.min(7,state.screen+1));
+    else goTo(Math.max(0,state.screen-1));
+  });
+});
+$("#startBtn").addEventListener("click",()=>goTo(1));
+$("#seeResultsBtn").addEventListener("click",()=>goTo(7));
+$("#restartBtn").addEventListener("click",()=>{ location.reload(); });
+
+function scoreProjects(){
+  const vibeSet=state.chips.vibe;
+  return PROJECTS.map(p=>{
+    let score=0;
+    const rating=state.ratings[p.id]||0;
+    score+= rating*4; // 0-20
+    // vs wins
+    Object.values(state.vsPicks).forEach(w=>{ if(w===p.id) score+=9; });
+    // vibe bonus
+    p.vibeBonus.forEach(v=>{ if(vibeSet.has(v)) score+=3; });
+    // feature bonus
+    if(state.chips.feature.has("Leaderboard") && (p.id==="ladder"||p.id==="prediction"||p.id==="stats")) score+=2;
+    if(state.chips.feature.has("Levels / XP / streaks") && p.id==="drills") score+=4;
+    if(state.chips.feature.has("Friends can join") && ["ladder","prediction","pickup","guess"].includes(p.id)) score+=2;
+    return {...p, score, rating};
+  }).sort((a,b)=>b.score-a.score);
+}
+
+function buildResults(){
+  const ranked=scoreProjects();
+  const winner=ranked[0];
+  const hasAny = Object.keys(state.ratings).length>0 || Object.keys(state.vsPicks).length>0;
+  if(!hasAny){
+    $("#winnerTitle").innerHTML=`No clear pick <span>yet</span>`;
+    $("#winnerDesc").textContent="You skipped the ratings — go back and tap some flames so we can call a winner.";
+  } else {
+    $("#winnerTitle").innerHTML=`Your #1 pick is <span>${winner.name}</span>`;
+    $("#winnerDesc").textContent=winner.desc;
+  }
+  $("#overallTag").textContent="Hype: " + (state.singleChips.overall || "—");
+  const max=Math.max(...ranked.map(r=>r.score),1);
+  $("#rankList").innerHTML=ranked.map((r,i)=>`
+    <div class="rank">
+      <div class="rank-num">${i+1}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><strong style="font-size:14.5px">${r.icon} ${r.name}</strong><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">${r.rating? "🔥".repeat(r.rating):"Not rated"}</span></div>
+        <div class="rank-bar"><b style="width:${Math.round(r.score/max*100)}%"></b></div>
+      </div>
+    </div>`).join("");
+
+  // Summary
+  const lines=[];
+  lines.push("⚽ CRUZ — PROJECT QUESTIONNAIRE");
+  lines.push("");
+  lines.push("🏆 My #1 pick: " + (hasAny? winner.name : "No pick yet"));
+  if(ranked[1]) lines.push("🥈 Runner-up: " + ranked[1].name);
+  if(ranked[2]) lines.push("🥉 3rd: " + ranked[2].name);
+  lines.push("");
+  lines.push("Ratings:");
+  PROJECTS.forEach(p=>{ const r=state.ratings[p.id]; lines.push(`- ${p.name}: ${r? r+"/5" : "not rated"}`); });
+  const vsLines=Object.entries(state.vsPicks).map(([idx,w])=>{ const pair=MATCHUPS[+idx]; const loser=pair.find(x=>x!==w); const wn=PROJECTS.find(p=>p.id===w)?.name; const ln=PROJECTS.find(p=>p.id===loser)?.name; return `- ${wn} over ${ln}`; });
+  if(vsLines.length){ lines.push(""); lines.push("Head-to-head wins:"); lines.push(...vsLines); }
+  if(state.chips.vibe.size){ lines.push(""); lines.push("My vibe: " + [...state.chips.vibe].join(", ")); }
+  if(state.singles.reaction) lines.push("I want friends to say: " + state.singles.reaction);
+  if(state.singles.hands) lines.push("How I want to build: " + state.singles.hands);
+  if(state.singleChips.time) lines.push("Time I can give: " + state.singleChips.time);
+  if(state.chips.funpart.size) lines.push("Most fun part: " + [...state.chips.funpart].join(", "));
+  if(state.singles.audience) lines.push("Who it's for: " + state.singles.audience);
+  if(state.chips.feature.size) lines.push("Must-haves: " + [...state.chips.feature].join(", "));
+  const deal=document.getElementById("dealbreaker").value.trim(); if(deal) lines.push("Don't want: " + deal);
+  const own=document.getElementById("ownIdea").value.trim(); if(own){ lines.push(""); lines.push("My own idea / dream version: " + own); }
+  const pname=document.getElementById("projectName").value.trim(); if(pname) lines.push("Name idea: " + pname);
+  if(state.singleChips.overall) lines.push("Overall hype: " + state.singleChips.overall);
+  $("#summaryBox").textContent=lines.join("\n");
+}
+
+function showToast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2200);
+}
+$("#copyBtn").addEventListener("click", async ()=>{
+  const text=$("#summaryBox").textContent;
+  try{ await navigator.clipboard.writeText(text); showToast("Copied — paste it to Dad!"); }
+  catch(e){
+    // fallback
+    const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy"); showToast("Copied — paste it to Dad!");}catch(_){showToast("Select the text above and copy it");} ta.remove();
+  }
+});
+
+renderProjects();
+renderVS();
+</script>
+</body>
+</html>
